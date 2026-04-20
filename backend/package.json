@@ -5,6 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
+    "dev:gql": "tsx watch src/server.ts -d",
     "build": "tsc",
     "start": "node dist/server.js",
     "db:migrate": "tsx src/db/migrate.ts",
@@ -13,10 +14,13 @@
     "db:reset": "npm run db:drop && npm run db:migrate && npm run db:seed"
   },
   "dependencies": {
+    "@apollo/server": "^5.5.0",
+    "@as-integrations/express4": "^1.1.2",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "graphql": "^16.13.2",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "pg": "^8.12.0",

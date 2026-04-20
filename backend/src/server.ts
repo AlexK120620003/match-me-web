@@ -1,6 +1,9 @@
 /**
  * Match-Me Web backend entry point.
- * Express app + HTTP server + Socket.io.
+ * Express app + HTTP server + Socket.io + GraphQL.
+ *
+ * Flags:
+ *   -d / --dev   Enable GraphQL playground (Apollo Sandbox).
  */
 import './types'; // ensure global augmentation is loaded
 import express from 'express';
@@ -11,25 +14,44 @@ import { env } from './config/env';
 import { router } from './routes';
 import { errorHandler } from './middleware/error';
 import { initSocket } from './sockets/io';
+import { mountGraphQL } from './graphql';
 
-const app = express();
+const isDev = process.argv.includes('-d') || process.argv.includes('--dev');
 
-app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
-app.use(express.json({ limit: '1mb' }));
+async function main() {
+  const app = express();
 
-// Static uploads (avatars)
-app.use('/uploads', express.static(path.resolve(env.UPLOAD_DIR)));
+  app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
+  app.use(express.json({ limit: '1mb' }));
 
-app.get('/health', (_req, res) => res.json({ ok: true }));
+  // Static uploads (avatars)
+  app.use('/uploads', express.static(path.resolve(env.UPLOAD_DIR)));
 
-app.use('/api', router);
+  app.get('/health', (_req, res) => res.json({ ok: true }));
 
-app.use(errorHandler);
+  // GraphQL (always available; playground only with -d flag)
+  await mountGraphQL(app, isDev);
 
-const server = http.createServer(app);
-initSocket(server);
+  // REST
+  app.use('/api', router);
 
-server.listen(env.PORT, () => {
-  console.log(`[server] listening on http://localhost:${env.PORT}`);
-  console.log(`[server] client expected at ${env.CLIENT_URL}`);
+  app.use(errorHandler);
+
+  const server = http.createServer(app);
+  initSocket(server);
+
+  server.listen(env.PORT, () => {
+    console.log(`[server] listening on http://localhost:${env.PORT}`);
+    console.log(`[server] client expected at ${env.CLIENT_URL}`);
+    if (isDev) {
+      console.log(`[server] GraphQL playground: http://localhost:${env.PORT}/graphql`);
+    } else {
+      console.log(`[server] GraphQL API: http://localhost:${env.PORT}/graphql (playground disabled — use -d flag)`);
+    }
+  });
+}
+
+main().catch((err) => {
+  console.error('[server] startup failed:', err);
+  process.exit(1);
 });
