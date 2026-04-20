@@ -1,0 +1,38 @@
+{
+  "name": "match-me-backend",
+  "version": "1.0.0",
+  "description": "Match-me web backend — gym/workout buddies matching API",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "db:migrate": "tsx src/db/migrate.ts",
+    "db:drop": "tsx src/db/drop.ts",
+    "db:seed": "tsx src/db/seed.ts",
+    "db:reset": "npm run db:drop && npm run db:migrate && npm run db:seed"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.12.0",
+    "socket.io": "^4.7.5",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/multer": "^1.4.11",
+    "@types/node": "^20.14.2",
+    "@types/pg": "^8.11.6",
+    "tsx": "^4.15.4",
+    "typescript": "^5.4.5"
+  }
+}

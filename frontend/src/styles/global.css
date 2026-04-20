@@ -1,0 +1,40 @@
+/* Minimal baseline — styling pass comes later.
+   Keep this file tiny so the functionality-only look is consistent. */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+  background: #f7f7f8;
+  color: #111;
+}
+a { color: #06c; }
+button { cursor: pointer; }
+input, textarea, select, button { font: inherit; }
+.container { max-width: 960px; margin: 0 auto; padding: 1rem; }
+.row { display: flex; gap: .5rem; align-items: center; }
+.col { display: flex; flex-direction: column; gap: .5rem; }
+.card { background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 1rem; margin-bottom: .75rem; }
+.muted { color: #666; font-size: .9em; }
+.pill { display: inline-block; padding: 2px 8px; border: 1px solid #ccc; border-radius: 999px; font-size: .85em; margin: 2px; }
+.badge { display: inline-block; min-width: 18px; padding: 0 6px; background: #c00; color: #fff; border-radius: 9px; font-size: .75em; text-align: center; }
+.online-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#2a2; margin-right:4px; }
+.offline-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#aaa; margin-right:4px; }
+nav { background: #222; color: #fff; padding: .75rem 1rem; display: flex; flex-wrap: wrap; gap: .25rem .75rem; align-items: center; }
+nav a { color: #fff; text-decoration: none; }
+nav a.active { text-decoration: underline; }
+nav button { margin-left: auto; }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .container { padding: .5rem; }
+  input:not([type="checkbox"]):not([type="file"]),
+  textarea, select { width: 100%; max-width: 100%; }
+  label { display: block; width: 100%; }
+  .row { flex-wrap: wrap; }
+  .pill { font-size: .8em; }
+  table { font-size: .85em; width: 100%; }
+  td, th { padding: 2px 4px; text-align: center; }
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.15em; }
+  fieldset { overflow-x: auto; }
+}
